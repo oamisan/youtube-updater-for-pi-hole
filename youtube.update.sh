@@ -14,7 +14,7 @@
 # as root: run this once then run "pihole restartdns"
 # You can cron this for auto-updating of the host file.
 
-forceIP="24.244.14.173"
+forceIP="123.456.789.999"
 
 # nothing below here should need changing
 
