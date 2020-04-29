@@ -21,7 +21,7 @@ forceIP="123.456.789.999"
 piLogs="/var/log/pihole.log*"
 ytHosts="/etc/hosts.youtube"
 
-workFile="/tmp/updateYT.tmp"
+workFile=$(mktemp)
 dnsmasqFile="/etc/dnsmasq.d/99-youtube.grublets.conf"
 
 if [ ! -f $dnsmasqFile ]; then
