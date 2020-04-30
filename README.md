@@ -4,8 +4,8 @@ Quick and dirty script that may help with YouTube ads.
 
 This is not ideal and not as good as running a proper ad blocker in a
 browser, but for things like AppleTV it seems to work well enough. Every
-time an ad slips through, it seems to add the offending hostname to the
-hosts file we want to force an IP of our choosing to.
+time an ad slips through, it adds the offending hostname to the
+hosts file in which we force an IP of our choosing.
 
 ### Install
 
