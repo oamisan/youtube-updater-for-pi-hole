@@ -9,13 +9,13 @@ hosts file we want to force an IP of our choosing to.
 
 ### Install
 
-[Do all these as root]
+**[Do all these as root]**
 
 01 - Download the script to a sane area eg.: /usr/local/bin
 
 02 - Make it executable. "chmod a+x youtube.update.sh"
 
-[steps 03-06 ensure you are using a geoip'd IP close to where you are]
+*[steps 03-06 ensure you are using a geoip'd IP close to where you are]*
 
 03 - Use the Pi-hole's "Query Log" function and seach for "googlevideo.com".
 
