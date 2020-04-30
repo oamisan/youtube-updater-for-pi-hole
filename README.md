@@ -1,21 +1,54 @@
 # YouTube updater for Pi-hole
 
-Quick and dirty script that may help with YouTube ads. Run this as root in 
-our Pi-hole and cron it.
-This is not ideal and not as good as running a proper ad blocker in a 
-browser, but for things like AppleTV it seems to work well enough.
+Quick and dirty script that may help with YouTube ads.
 
-From the script:
-> crappy hack that seems to keep YouTube ads to a minumum.
-> over two hours of Peppa Pig and no ads. Taking one for the team...
-> 
-> hange forceIP to the real IP from an nslookup of a 
-> googlevideo hostname so you get something in your 
-> geographical region. You can find one in your
-> Pi-hole's query logs.
-> They will look something like this:
->  r6---sn-ni5f-tfbl.googlevideo.com
-> 
-> as root: run this once then run "pihole restartdns"
-> You can cron this for auto-updating of the host file.
+This is not ideal and not as good as running a proper ad blocker in a
+browser, but for things like AppleTV it seems to work well enough. Every
+time an ad slips through, it seems to add the offending hostname to the
+hosts file we want to force an IP of our choosing to.
+
+### Install
+
+[Do all these as root]
+
+01 - Download the script to a sane area eg.: /usr/local/bin
+
+02 - Make it executable. "chmod a+x youtube.update.sh"
+
+[steps 03-06 ensure you are using a geoip'd IP close to where you are]
+
+03 - Use the Pi-hole's "Query Log" function and seach for "googlevideo.com".
+
+04 - Look for a hostname similar to "r6---sn-ni5f-tfbl.googlevideo.com"
+     It won't match the example, but you will know one when you see one.
+     You will likely have many matches, pick one at random.
+     If you don't see any, watch some YouTube! :)
+
+05 - Perform a name lookup on that hostname you found
+     eg.: "nslookup r6---sn-ni5f-tfbl.googlevideo.com"
+
+06 - Copy the IPv4 IP address it returns. 
+
+07 - Edit the script, change the forceIP="123.456.789.999" to the real
+     numbers you copied in step 5.
+
+08 - Save it.
+
+09 - Execute the script for the first time "./youtube.update.sh"
+
+10 - Restart Pi-hole DNS "pihole restartdns"
+
+11 - Automate it to run every minute for constant updates as new things slip
+     through. I did mine in cron. "man cron" if you don't know how.
+
+
+### Uninstall
+
+01 - Remove the cron entry you created in Install.11.
+
+02 - Remove the files the script created:
+     "rm /etc/hosts.youtube /etc/dnsmasq.d/99-youtube.grublets.conf"
+
+03 - Remove the script from wherever you saved it in Install.01
+
 
