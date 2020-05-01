@@ -36,10 +36,14 @@ fi
 
 cp $ytHosts $workFile
 zgrep -e "reply.*-.*\.googlevideo.*\..*\..*\..*" $piLogs \
-	| awk -v fIP=$forceIP '{ print fIP, $6 }' >> $workFile	
-sort -u $workFile > $ytHosts
-rm $workFile
+    | awk -v fIP=$forceIP '{ print fIP, $6 }' >> $workFile
 
-pihole restartdns reload-lists # reload lists.
+sort -u $workFile -o $workFile
+if ! cmp $workFile $ytHosts; then
+    mv $workFile $ytHosts
+    /usr/local/bin/pihole restartdns reload-lists
+fi
+  
+
 
 exit
