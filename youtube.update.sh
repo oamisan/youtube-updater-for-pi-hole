@@ -40,4 +40,6 @@ zgrep -e "reply.*-.*\.googlevideo.*\..*\..*\..*" $piLogs \
 sort -u $workFile > $ytHosts
 rm $workFile
 
+pihole restartdns reload-lists # reload lists.
+
 exit
