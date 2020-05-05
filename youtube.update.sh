@@ -41,9 +41,8 @@ zgrep -e "reply.*-.*\.googlevideo.*\..*\..*\..*" $piLogs \
 sort -u $workFile -o $workFile
 if ! cmp $workFile $ytHosts; then
     mv $workFile $ytHosts
+    chmod 644 $ytHosts
     /usr/local/bin/pihole restartdns reload-lists
 fi
-  
-rm $workFile
 
 exit
