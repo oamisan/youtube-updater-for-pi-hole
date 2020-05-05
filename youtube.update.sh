@@ -45,7 +45,7 @@ if ! cmp $workFile $ytHosts; then
     chmod 644 $ytHosts	
     /usr/local/bin/pihole restartdns reload-lists
 else
-	rm $workFile
+    rm $workFile
 fi
 
 
