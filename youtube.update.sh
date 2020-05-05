@@ -27,11 +27,11 @@ workFile=$(mktemp)
 dnsmasqFile="/etc/dnsmasq.d/99-youtube.grublets.conf"
 
 if [ ! -f $dnsmasqFile ]; then
-	echo "addn-hosts=$ytHosts" > $dnsmasqFile
-	touch $ytHosts
-	piLogs="$piLogs*" # preload with results from all logs
-	echo "Setup complete! Execute 'pihole restartdns' as root."
-	echo "cron the script to run every minute or so for updates."
+    echo "addn-hosts=$ytHosts" > $dnsmasqFile
+    touch $ytHosts
+    piLogs="$piLogs*" # preload with results from all logs
+    echo "Setup complete! Execute 'pihole restartdns' as root."
+    echo "cron the script to run every minute or so for updates."
 fi
 
 cp $ytHosts $workFile
