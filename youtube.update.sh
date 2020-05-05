@@ -2,7 +2,7 @@
 
 # crappy hack that seems to keep YouTube ads to a minumum.
 # over two hours of Peppa Pig and no ads. Taking one for the team...
-# grub@grub.net v0.04
+# grub@grub.net v0.10
 
 # Change forceIP to the real IP from an nslookup of a 
 # googlevideo hostname so you get something in your 
