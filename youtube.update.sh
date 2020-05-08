@@ -2,7 +2,7 @@
 
 # crappy hack that seems to keep YouTube ads to a minumum.
 # over two hours of Peppa Pig and no ads. Taking one for the team...
-# grub@grub.net v0.10
+# grub@grub.net v0.11
 
 # Change forceIP to the real IP from an nslookup of a 
 # googlevideo hostname so you get something in your 
@@ -43,7 +43,7 @@ sort -u $workFile -o $workFile
 if ! cmp $workFile $ytHosts; then
     mv $workFile $ytHosts
     chmod 644 $ytHosts	
-    /usr/local/bin/pihole restartdns reload-lists
+    /usr/local/bin/pihole restartdns reload
 else
     rm $workFile
 fi
