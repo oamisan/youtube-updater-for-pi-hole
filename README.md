@@ -12,8 +12,9 @@ effectiveness (even better, redirect to your Pi-hole!)
 Some apps have hard-coded DNS servers that will bypass your Pi-hole.
 If you don't do this then use the script, please don't complain about ads
 in, for example, your Samsung TV's YouTube app.
-
 Read the manual for your network gateway device.
+
+Avoid updating any official YouTube apps if possible.
 
 
 ### Install
