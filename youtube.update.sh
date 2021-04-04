@@ -2,10 +2,10 @@
 
 # crappy hack that seems to keep YouTube ads to a minumum.
 # over two hours of Peppa Pig and no ads. Taking one for the team...
-# grub@grub.net v0.11
+# grub@grub.net v0.11, SD Write tweak revision 2
 
-# Change forceIP to the real IP from an nslookup of a 
-# googlevideo hostname so you get something in your 
+# Change forceIPv4 to the real IP from an nslookup of a
+# googlevideo hostname so you get something in your
 # geographical region. You can find one in your
 # Pi-hole's query logs.
 # They will look something like this:
@@ -16,14 +16,28 @@
 # Mine fires every minute:
 # * * * * * /home/grub/bin/youtube.update.sh 2>&1
 
-forceIP="123.456.789.999"
+
+ytHosts="/etc/hosts.youtube"
+piLogs="/var/log/pihole.log"
+currenttime=$(date +%H%M)
+
+if [ ! -f $ytHosts ]; then
+        zgrep -e "reply.*-.*\.googlevideo.*\..*\..*\..*" $piLogs | awk '{ print $8, $6 }' | tail -1 > $ytHosts
+fi
+
+# renews forceIP every in morning i.e. 6AM
+
+if [[ "$currenttime" > "0600" ]] && [[ "$currenttime" < "0602" ]]  ; then
+        newIP=$(zgrep -e "reply.*-.*\.googlevideo.*\..*\..*\..*" $piLogs | awk '{ print $8 }' | tail -1)
+        awk -v IP="$newIP" '{print IP, $2}' $ytHosts > $ytHosts.bak # updates exiting records with the new IP
+        mv $ytHosts.bak $ytHosts
+        forceIPv4=$newIP
+else
+        forceIPv4=$(head -1 $ytHosts | awk '{print $1}')
+fi
 
 # nothing below here should need changing
 
-piLogs="/var/log/pihole.log"
-ytHosts="/etc/hosts.youtube"
-
-workFile=$(mktemp)
 dnsmasqFile="/etc/dnsmasq.d/99-youtube.grublets.conf"
 
 if [ ! -f $dnsmasqFile ]; then
@@ -34,18 +48,20 @@ if [ ! -f $dnsmasqFile ]; then
     echo "cron the script to run every minute or so for updates."
 fi
 
-cp $ytHosts $workFile
-zgrep -e "reply.*-.*\.googlevideo.*\..*\..*\..*" $piLogs \
-    | awk -v fIP=$forceIP '{ print fIP, $6 }' >> $workFile
+# below was the SD card friendlier script by MijnKijk
 
-sort -u $workFile -o $workFile
+ytEntries=$(wc -l $ytHosts)
 
-if ! cmp $workFile $ytHosts; then
-    mv $workFile $ytHosts
-    chmod 644 $ytHosts	
-    /usr/local/bin/pihole restartdns reload
-else
-    rm $workFile
+for i in $(zgrep -e "reply.*-.*\.googlevideo.*\..*\..*\..*" $piLogs | awk '{ print $6 }')
+do
+   if [ $(grep -c "$i" $ytHosts) == 0 ]; then
+      # Add line to ytHosts
+      echo $forceIPv4 $i >> $ytHosts
+   fi
+done
+
+if [ "$ytEntries" != "$(wc -l $ytHosts)" ]; then
+   /usr/local/bin/pihole restartdns reload
 fi
 
 
